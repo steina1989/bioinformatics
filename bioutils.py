@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import collections
 
+
 def count_nucleotides(dna: str) -> collections.defaultdict:
     """ Counts character occurrence in arbitrary string, aptly named due to
     context of this course.
@@ -13,6 +14,7 @@ def count_nucleotides(dna: str) -> collections.defaultdict:
     for char in dna:
         occurrence_dict[char] += 1
     return occurrence_dict
+
 
 def count_pattern_occurrence(dna: str, pattern: str) -> int:
     """ Count pattern occurrence in an arbitrary string, in an overlapping manner.
@@ -36,10 +38,10 @@ def most_frequent_kmer(dna: str, k: int) -> list:
     >>> sorted(most_frequent_kmer("ACGTTGCATGTCGCATGATGCATGAGAGCT",4))
     ['CATG', 'GCAT']
     """
-    return ['CATG', 'GCT']
+    return ["CATG", "GCT"]
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     import doctest, sys
+
     doctest.testmod()
