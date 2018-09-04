@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import sys, collections
-from operator import itemgetter
 from bioutils import all_kmers, count_pattern_occurrence
 
 """

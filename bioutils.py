@@ -58,13 +58,11 @@ def reverse_complement(dna: str) -> str:
     >>> reverse_complement('GTCA')
     'TGAC'
     """
-    substitude_dict = dict(zip('ACGT','TGCA'))
+    swap = dict(zip('ACGT','TGCA'))
+    reversed_str = ''
     for char in dna:
-        char = substitude_dict[char]
-    return dna[::-1]
-
-
-
+        reversed_str += swap[char]
+    return reversed_str[::-1]
 
 if __name__ == "__main__":
     import doctest, sys
