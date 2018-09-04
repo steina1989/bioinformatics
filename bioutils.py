@@ -42,7 +42,9 @@ def most_frequent_kmer(dna: str, k: int) -> list:
     return ["CATG", "GCAT"]
 
 def all_kmers(dna: str, k: int) -> list:
-    """ Returns a list of kmers, i.e. all substrings of length k 
+    """ Returns a list of kmers, i.e. all substrings of length k
+
+    doctest: 
     >>> all_kmers("abcdefg",3)
     ['abc', 'bcd', 'cde', 'def', 'efg']
     """
@@ -54,17 +56,29 @@ def all_kmers(dna: str, k: int) -> list:
 
 def reverse_complement(dna: str) -> str:
     """ Returns the reverse complement of a dna string.
+    
     doctest:
     >>> reverse_complement('GTCA')
     'TGAC'
     """
     swap = dict(zip('ACGT','TGCA'))
-    reversed_str = ''
+    string = ''
     for char in dna:
-        reversed_str += swap[char]
-    return reversed_str[::-1]
+        string += swap[char]
+    return string[::-1]
+
+def find_pattern_indexes(dna: str, pattern: str) -> list:
+    """ Return list of indexes of a overlapping pattern in a string.
+
+    doctest:
+    >>> find_pattern_indexes("GATATATGCATATACTT","ATAT")
+    [1, 3, 9]
+    """
+    # List comprehension
+    return [i for i,kmer in enumerate(all_kmers(dna,len(pattern))) if pattern in kmer]
+
 
 if __name__ == "__main__":
-    import doctest, sys
+    import doctest
 
     doctest.testmod()
