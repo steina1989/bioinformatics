@@ -32,8 +32,9 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
 
 
 def most_frequent_kmer(dna: str, k: int) -> list:
-    """ Returns an unsorted list of the most frequent k-mers in a dna string.
-
+    """ NOT IMPLEMENTED YET. Solved in 3_find_most_frequent_k-mer. 
+    Returns an unsorted list of the most frequent k-mers in a dna string.
+    
     doctest:
     >>> sorted(most_frequent_kmer("ACGTTGCATGTCGCATGATGCATGAGAGCT",4))
     ['CATG', 'GCAT']
@@ -50,6 +51,20 @@ def all_kmers(dna: str, k: int) -> list:
         dna_substring = dna[i : i + k]
         list_kmers.append(dna_substring)
     return list_kmers
+
+def reverse_complement(dna: str) -> str:
+    """ Returns the reverse complement of a dna string.
+    doctest:
+    >>> reverse_complement('GTCA')
+    'TGAC'
+    """
+    substitude_dict = dict(zip('ACGT','TGCA'))
+    for char in dna:
+        char = substitude_dict[char]
+    return dna[::-1]
+
+
+
 
 if __name__ == "__main__":
     import doctest, sys
