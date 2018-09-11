@@ -26,7 +26,7 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
     """
     count = 0
     k = len(pattern)
-    for kmer in all_kmers(dna,k):
+    for kmer in all_kmers(dna, k):
         if pattern in kmer:
             count += 1
     return count
@@ -40,13 +40,14 @@ def most_frequent_kmer(dna: str, k: int) -> list:
     ['CATG', 'GCAT']
     """
     occurrence_dict = collections.defaultdict(int)
-    for i in range(len(dna) - k +1):
-        kmer = dna[i:i + k]
-        occurrence_dict[kmer] += count_pattern_occurrence(dna,kmer)
+    for i in range(len(dna) - k + 1):
+        kmer = dna[i : i + k]
+        occurrence_dict[kmer] += count_pattern_occurrence(dna, kmer)
     max_freq = max(occurrence_dict.values())
-    filtered_dict = {k : v for k, v in occurrence_dict.items() if v == max_freq}
+    filtered_dict = {k: v for k, v in occurrence_dict.items() if v == max_freq}
 
     return filtered_dict
+
 
 def all_kmers(dna: str, k: int) -> list:
     """ Returns a generator object that produces all kmers in a dna string.
@@ -59,6 +60,7 @@ def all_kmers(dna: str, k: int) -> list:
     for i in range(len(dna) - k + 1):
         yield dna[i : i + k]
 
+
 def reverse_complement(dna: str) -> str:
     """ Returns the reverse complement of a dna string.
     
@@ -66,11 +68,12 @@ def reverse_complement(dna: str) -> str:
     >>> reverse_complement('GTCA')
     'TGAC'
     """
-    swap = dict(zip('ACGT','TGCA'))
-    string = ''
+    swap = dict(zip("ACGT", "TGCA"))
+    string = ""
     for char in dna:
         string += swap[char]
     return string[::-1]
+
 
 def find_pattern_indexes(dna: str, pattern: str) -> list:
     """ Return list of indexes of a overlapping pattern in a string.
@@ -79,7 +82,8 @@ def find_pattern_indexes(dna: str, pattern: str) -> list:
     >>> find_pattern_indexes("GATATATGCATATACTT","ATAT")
     [1, 3, 9]
     """
-    return [i for i,kmer in enumerate(all_kmers(dna,len(pattern))) if pattern in kmer]
+    return [i for i, kmer in enumerate(all_kmers(dna, len(pattern))) if pattern in kmer]
+
 
 def hamming_distance(a: str, b: str) -> int:
     """ Returns the hamming distance of two strings
@@ -91,7 +95,7 @@ def hamming_distance(a: str, b: str) -> int:
     dist = 0
     for i in range(len(a)):
         if a[i] != b[i]:
-            dist +=1
+            dist += 1
     return dist
 
 

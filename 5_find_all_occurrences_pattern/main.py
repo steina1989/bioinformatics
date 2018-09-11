@@ -2,9 +2,10 @@
 import sys
 from bioutils import find_pattern_indexes
 
-def main(pattern,dna):
-    print(' '.join(list(map(str, find_pattern_indexes(dna,pattern)))))
-    
+
+def main(pattern, dna):
+    print(" ".join(list(map(str, find_pattern_indexes(dna, pattern)))))
+
 
 if __name__ == "__main__":
     PATTERN = sys.stdin.readline().strip()

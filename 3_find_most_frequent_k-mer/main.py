@@ -2,9 +2,11 @@
 import sys, collections
 from bioutils import most_frequent_kmer
 
+
 def main(dna, k):
-    count_dict = most_frequent_kmer(dna,k)
-    print(' '.join(count_dict.keys()))
+    count_dict = most_frequent_kmer(dna, k)
+    print(" ".join(count_dict.keys()))
+
 
 if __name__ == "__main__":
     DNA = sys.stdin.readline().strip()
