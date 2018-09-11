@@ -99,6 +99,31 @@ def hamming_distance(a: str, b: str) -> int:
     return dist
 
 
+def approximate_occurrences(dna: str, pattern: str, d: int) -> list:
+    """ Returns list of indeces where there is some k-mer substring pattern that 
+    has <= d occurrences of mismatching characters.
+    >>> pattern = 'ATTCTGGA'
+    >>> dna = 'CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAATGCCTAGCGGCTTGTGGTTTCTCCTACGCTCC'
+    >>> approximate_occurrences(dna,pattern,3)
+    [6, 7, 26, 27, 78]
+    """
+    k = len(pattern)
+    return [
+        i
+        for i, kmer in enumerate(all_kmers(dna, k))
+        if hamming_distance(kmer, pattern) <= d
+    ]
+
+
+def skew(dna):
+    """ 
+    """
+
+
+# 0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
+#    C  A  T G G G C A T C G G C C A T A  C G  C  C
+
+
 if __name__ == "__main__":
     import doctest
 
