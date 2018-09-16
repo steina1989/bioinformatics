@@ -51,7 +51,7 @@ def most_frequent_kmer(dna: str, k: int) -> list:
 
 def all_kmers(dna: str, k: int) -> list:
     """ Returns a generator object that produces all kmers in a dna string.
-    i.e. all substrings of length k in the dna string.
+    Or more generally, all substrings of length k in a string.
 
     doctest: 
     >>> list(all_kmers("abcdefg",3))
@@ -115,13 +115,35 @@ def approximate_occurrences(dna: str, pattern: str, d: int) -> list:
     ]
 
 
-def skew(dna):
-    """ 
+def find_min_skew(dna: str) -> list:
+    """ Define skew as the difference between total number of occurrences of G and C.
+    Returns indices of all mininum skew locations in a genome.
     """
 
 
 # 0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
 #    C  A  T G G G C A T C G G C C A T A  C G  C  C
+
+
+def find_clumps(dna: str, k: int, L: int, t: int) -> set:
+    """ Find distinct k-mers inside a genome forming a (L,t)-clump.
+    L length of the clump
+    k length of kmer
+    t minimal occurrence count of the kmer to give the (L,t)-clump
+    doctest:
+    >>> dna = 'CGGACTCGACAGATGTGAAGAAATGTGAAGACTGAGTGAAGAGAAGAGGAAACACGACACGACATTGCGACATAATGTACGAATGTAATGTGCCTATGGC'
+    >>> sorted(list(find_clumps(dna, 5, 75, 4)))
+    ['AATGT', 'CGACA', 'GAAGA']
+    """
+    out = set()
+    # Maybe 'all_kmers' is too narrowly named.
+    for substr in all_kmers(dna, L):
+        occurrence_dict = collections.defaultdict(int)
+        for kmer in all_kmers(substr, k):
+            occurrence_dict[kmer] += 1
+        out.update([kmer for kmer, count in occurrence_dict.items() if count >= t])
+
+    return out
 
 
 if __name__ == "__main__":
