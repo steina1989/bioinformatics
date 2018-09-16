@@ -26,7 +26,7 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
     """
     count = 0
     k = len(pattern)
-    for kmer in all_kmers(dna, k):
+    for kmer in iter_substr(dna, k):
         if pattern in kmer:
             count += 1
     return count
@@ -49,12 +49,12 @@ def most_frequent_kmer(dna: str, k: int) -> list:
     return filtered_dict
 
 
-def all_kmers(dna: str, k: int) -> list:
+def iter_substr(dna: str, k: int) -> list:
     """ Returns a generator object that produces all kmers in a dna string.
     Or more generally, all substrings of length k in a string.
 
     doctest: 
-    >>> list(all_kmers("abcdefg",3))
+    >>> list(iter_substr("abcdefg",3))
     ['abc', 'bcd', 'cde', 'def', 'efg']
     """
     for i in range(len(dna) - k + 1):
@@ -82,11 +82,15 @@ def find_pattern_indexes(dna: str, pattern: str) -> list:
     >>> find_pattern_indexes("GATATATGCATATACTT","ATAT")
     [1, 3, 9]
     """
-    return [i for i, kmer in enumerate(all_kmers(dna, len(pattern))) if pattern in kmer]
+    return [
+        i for i, kmer in enumerate(iter_substr(dna, len(pattern))) if pattern in kmer
+    ]
 
 
 def hamming_distance(a: str, b: str) -> int:
     """ Returns the hamming distance of two strings
+
+    doctest:
     >>> hamming_distance('GGGCCGTTGGT','GGACCGTTGAC')
     3
     """
@@ -102,6 +106,8 @@ def hamming_distance(a: str, b: str) -> int:
 def approximate_occurrences(dna: str, pattern: str, d: int) -> list:
     """ Returns list of indeces where there is some k-mer substring pattern that 
     has <= d occurrences of mismatching characters.
+
+    doctest:
     >>> pattern = 'ATTCTGGA'
     >>> dna = 'CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAATGCCTAGCGGCTTGTGGTTTCTCCTACGCTCC'
     >>> approximate_occurrences(dna,pattern,3)
@@ -110,7 +116,7 @@ def approximate_occurrences(dna: str, pattern: str, d: int) -> list:
     k = len(pattern)
     return [
         i
-        for i, kmer in enumerate(all_kmers(dna, k))
+        for i, kmer in enumerate(iter_substr(dna, k))
         if hamming_distance(kmer, pattern) <= d
     ]
 
@@ -118,11 +124,23 @@ def approximate_occurrences(dna: str, pattern: str, d: int) -> list:
 def find_min_skew(dna: str) -> list:
     """ Define skew as the difference between total number of occurrences of G and C.
     Returns indices of all mininum skew locations in a genome.
+
+    doctest:
+    >>> dna = 'CCTATCGGTGGATTAGCATGTCCCTGTACGTTTCGCCGCGAACTAGTTCACACGGCTTGATGGCAAATGGTTTTTCCGGCGACCGTAATCGTCCACCGAG'
+    >>> find_min_skew(dna)
+    [53, 97]
     """
+    current_count = 0
+    list_counts = [current_count]
+    for char in dna:
+        if "C" in char:
+            current_count -= 1
+        elif "G" in char:
+            current_count += 1
+        list_counts.append(current_count)
 
-
-# 0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
-#    C  A  T G G G C A T C G G C C A T A  C G  C  C
+    minimum = min(list_counts)
+    return [i for i, val in enumerate(list_counts) if val == minimum]
 
 
 def find_clumps(dna: str, k: int, L: int, t: int) -> set:
@@ -130,16 +148,16 @@ def find_clumps(dna: str, k: int, L: int, t: int) -> set:
     L length of the clump
     k length of kmer
     t minimal occurrence count of the kmer to give the (L,t)-clump
+
     doctest:
     >>> dna = 'CGGACTCGACAGATGTGAAGAAATGTGAAGACTGAGTGAAGAGAAGAGGAAACACGACACGACATTGCGACATAATGTACGAATGTAATGTGCCTATGGC'
     >>> sorted(list(find_clumps(dna, 5, 75, 4)))
     ['AATGT', 'CGACA', 'GAAGA']
     """
     out = set()
-    # Maybe 'all_kmers' is too narrowly named.
-    for substr in all_kmers(dna, L):
+    for substr in iter_substr(dna, L):
         occurrence_dict = collections.defaultdict(int)
-        for kmer in all_kmers(substr, k):
+        for kmer in iter_substr(substr, k):
             occurrence_dict[kmer] += 1
         out.update([kmer for kmer, count in occurrence_dict.items() if count >= t])
 
