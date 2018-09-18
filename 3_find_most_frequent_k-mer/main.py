@@ -4,8 +4,8 @@ from bioutils import most_frequent_kmer
 
 
 def main(dna, k):
-    count_dict = most_frequent_kmer(dna, k)
-    print(" ".join(count_dict.keys()))
+    out = most_frequent_kmer(dna, k)
+    print(" ".join(out))
 
 
 if __name__ == "__main__":

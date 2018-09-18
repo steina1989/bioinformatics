@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import collections
+import itertools as it
 
 
 def count_nucleotides(dna: str) -> collections.defaultdict:
@@ -33,20 +34,38 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
 
 
 def most_frequent_kmer(dna: str, k: int) -> list:
-    """Returns an unsorted list of the most frequent k-mers in a dna string.
+    """Returns a list of the most frequent k-mers in a dna string.
     
     doctest:
     >>> sorted(most_frequent_kmer("ACGTTGCATGTCGCATGATGCATGAGAGCT",4))
     ['CATG', 'GCAT']
     """
     occurrence_dict = collections.defaultdict(int)
-    for i in range(len(dna) - k + 1):
-        kmer = dna[i : i + k]
+    for kmer in iter_substr(dna, k):
         occurrence_dict[kmer] += count_pattern_occurrence(dna, kmer)
     max_freq = max(occurrence_dict.values())
-    filtered_dict = {k: v for k, v in occurrence_dict.items() if v == max_freq}
+    return [kmer for kmer, c in occurrence_dict.items() if c == max_freq]
 
-    return filtered_dict
+
+def most_frequent_approx_kmer(dna: str, k: int, d: int) -> list:
+    """ Returns a (freq,kmer)-dict of the most frequent k-mers in a dna string that
+    has at most a hamming distance of d.
+    doctest:
+    >>> dna = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
+    >>> sorted(most_frequent_approx_kmer(dna,4,1))
+    ['ATGC', 'ATGT', 'GATG']
+    """
+    debug_count = 0
+    occurrence_dict = collections.defaultdict(int)
+    for kmer in iter_substr(dna, k):
+        debug_count += 1
+        for product in it.product("ACGT", repeat=k):
+            dist = hamming_distance(kmer, product)
+            if dist <= d:
+                occurrence_dict["".join(product)] += 1
+
+    max_freq = max(occurrence_dict.values())
+    return [kmer for kmer, count in occurrence_dict.items() if count == max_freq]
 
 
 def iter_substr(dna: str, k: int) -> list:
@@ -163,6 +182,17 @@ def find_clumps(dna: str, k: int, L: int, t: int) -> set:
 
     return out
 
+
+"""
+    MOTIFENUMERATION(Dna, k, d)
+    Patterns ← an empty set
+    for each k-mer Pattern in Dna
+        for each k-mer Pattern’ differing from Pattern by at most d mismatches
+            if Pattern' appears in each string from Dna with at most d mismatches
+                add Pattern' to Patterns
+    remove duplicates from Patterns
+    return Patterns
+"""
 
 if __name__ == "__main__":
     import doctest
