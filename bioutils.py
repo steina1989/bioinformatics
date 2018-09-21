@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import collections
 import itertools as it
+from typing import Iterable
 
 
 def count_nucleotides(dna: str) -> collections.defaultdict:
@@ -33,8 +34,8 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
     return count
 
 
-def most_frequent_kmer(dna: str, k: int) -> list:
-    """Returns a list of the most frequent k-mers in a dna string.
+def most_frequent_kmer(dna: str, k: int) -> set:
+    """Returns a set of the most frequent k-mers in a dna string.
     
     doctest:
     >>> sorted(most_frequent_kmer("ACGTTGCATGTCGCATGATGCATGAGAGCT",4))
@@ -44,32 +45,59 @@ def most_frequent_kmer(dna: str, k: int) -> list:
     for kmer in iter_substr(dna, k):
         occurrence_dict[kmer] += count_pattern_occurrence(dna, kmer)
     max_freq = max(occurrence_dict.values())
-    return [kmer for kmer, c in occurrence_dict.items() if c == max_freq]
+    return {kmer for kmer, c in occurrence_dict.items() if c == max_freq}
 
 
-def most_frequent_approx_kmer(dna: str, k: int, d: int) -> list:
-    """ Returns a (freq,kmer)-dict of the most frequent k-mers in a dna string that
-    has at most a hamming distance of d.
+def most_frequent_approx_kmer(dna: str, k: int, d: int) -> set:
+    """ Returns the set of the most frequent approximate kmers in a dna string that
+    have a hamming distance of at most d from any kmer in the dna.
     doctest:
     >>> dna = 'ACGTTGCATGTCGCATGATGCATGAGAGCT'
     >>> sorted(most_frequent_approx_kmer(dna,4,1))
     ['ATGC', 'ATGT', 'GATG']
     """
-    debug_count = 0
     occurrence_dict = collections.defaultdict(int)
     for kmer in iter_substr(dna, k):
-        debug_count += 1
         for product in it.product("ACGT", repeat=k):
             dist = hamming_distance(kmer, product)
             if dist <= d:
                 occurrence_dict["".join(product)] += 1
 
     max_freq = max(occurrence_dict.values())
-    return [kmer for kmer, count in occurrence_dict.items() if count == max_freq]
+    return {kmer for kmer, count in occurrence_dict.items() if count == max_freq}
 
 
-def iter_substr(dna: str, k: int) -> list:
-    """ Returns a generator object that produces all kmers in a dna string.
+def motif_enumeration(dna: Iterable, k: int, d: int) -> set:
+    """ Finds and returns all (k,d)-motifs in a collection of strings.
+    Given a collection of strings Dna and an integer d, a k-mer is a (k,d)-motif if it
+    appears in every string from Dna with at most d mismatches.
+    doctest:
+    >>> dna = ['ATTTGGC','TGCCTTA','CGGTATC','GAAAATT']
+    >>> sorted(motif_enumeration(dna,3,1))
+    ['ATA', 'ATT', 'GTT', 'TTT']
+    """
+    kmer_sets = []
+
+    for line in dna:
+        line_set = set()
+        for kmer in iter_substr(line, k):
+            for product in it.product("ACGT", repeat=k):
+                dist = hamming_distance(kmer, product)
+                if dist <= d:
+                    line_set.add("".join(product))
+        kmer_sets.append(line_set)
+    return set.intersection(*kmer_sets)
+
+
+
+def median_strings(dna: Iterable, k: int, d: int) -> set:
+    """ Finds
+    """
+    pass
+
+
+def iter_substr(dna: str, k: int):
+    """ Returns a generator that produces all kmers in a dna string.
     Or more generally, all substrings of length k in a string.
 
     doctest: 
