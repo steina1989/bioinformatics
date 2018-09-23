@@ -89,11 +89,35 @@ def motif_enumeration(dna: Iterable, k: int, d: int) -> set:
     return set.intersection(*kmer_sets)
 
 
-
-def median_strings(dna: Iterable, k: int, d: int) -> set:
-    """ Finds
+def min_hamming_dist(pattern: str, text: str):
+    """ Returns the lowest distance a k long pattern has for any k-mer in text.
+    A.k.a. d(Pattern, Text)
+    >>> min_hamming_dist("BB", "AAAAAAABAAAA")
+    1
     """
-    pass
+    lowest = float("inf")
+    for kmer in iter_substr(text, len(pattern)):
+        dist = hamming_distance(kmer, pattern)
+        if dist < lowest:
+            lowest = dist
+    return lowest
+
+
+def median_string(dna_collection: Iterable, k: int) -> str:
+    """ 
+    >>> a = ['AAATTGACGCAT','GACGACCACGTT','CGTCAGCGCCTG','GCTGAGCACCGG','AGTACGGGACAG']
+    >>> median_string(a, 3)
+    'ACG'
+    """
+    dist = float("inf")
+    lowest = ""
+    for product in it.product("ACGT", repeat=k):
+        pattern = "".join(product)
+        new_dist = sum(min_hamming_dist(pattern, dna) for dna in dna_collection)
+        if new_dist < dist:
+            dist = new_dist
+            lowest = pattern
+    return lowest
 
 
 def iter_substr(dna: str, k: int):
@@ -210,17 +234,6 @@ def find_clumps(dna: str, k: int, L: int, t: int) -> set:
 
     return out
 
-
-"""
-    MOTIFENUMERATION(Dna, k, d)
-    Patterns ← an empty set
-    for each k-mer Pattern in Dna
-        for each k-mer Pattern’ differing from Pattern by at most d mismatches
-            if Pattern' appears in each string from Dna with at most d mismatches
-                add Pattern' to Patterns
-    remove duplicates from Patterns
-    return Patterns
-"""
 
 if __name__ == "__main__":
     import doctest
