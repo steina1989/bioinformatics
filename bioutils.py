@@ -90,16 +90,17 @@ def motif_enumeration(dna: Iterable, k: int, d: int) -> set:
 
 
 def min_hamming_dist(pattern: str, text: str):
-    """ Returns the lowest distance a k long pattern has for any k-mer in text.
+    """ Returns the lowest distance a pattern of length k has for any k-mer in text.
     A.k.a. d(Pattern, Text)
+
+    doctest:
     >>> min_hamming_dist("BB", "AAAAAAABAAAA")
     1
     """
     lowest = float("inf")
     for kmer in iter_substr(text, len(pattern)):
         dist = hamming_distance(kmer, pattern)
-        if dist < lowest:
-            lowest = dist
+        lowest = min(dist,lowest)
     return lowest
 
 
@@ -110,14 +111,14 @@ def median_string(dna_collection: Iterable, k: int) -> str:
     'ACG'
     """
     dist = float("inf")
-    lowest = ""
+    median = ""
     for product in it.product("ACGT", repeat=k):
         pattern = "".join(product)
         new_dist = sum(min_hamming_dist(pattern, dna) for dna in dna_collection)
         if new_dist < dist:
             dist = new_dist
-            lowest = pattern
-    return lowest
+            median = pattern
+    return median
 
 
 def iter_substr(dna: str, k: int):
