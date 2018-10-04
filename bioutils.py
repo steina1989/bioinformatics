@@ -20,6 +20,7 @@ def count_nucleotides(dna: str) -> collections.defaultdict:
         occurrence_dict[char] += 1
     return occurrence_dict
 
+
 def count_pattern_occurrence(dna: str, pattern: str) -> int:
     """ Count pattern occurrence in an arbitrary string, in an overlapping manner.
     
@@ -34,13 +35,14 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
             count += 1
     return count
 
+
 def random_motifs(dna: Iterable, k: int) -> list:
     """ Returns a list of randomly chosen k-mer inside each dna in the dna iterable """
     random_kmers = []
     n = len(dna[0])
     for string in dna:
-        i = random.randint(0,n-k)
-        random_kmers.append(string[i:i+k])
+        i = random.randint(0, n - k)
+        random_kmers.append(string[i : i + k])
     return random_kmers
 
 
@@ -110,7 +112,7 @@ def min_hamming_dist(pattern: str, text: str):
     lowest = float("inf")
     for kmer in iter_substr(text, len(pattern)):
         dist = hamming_distance(kmer, pattern)
-        lowest = min(dist,lowest)
+        lowest = min(dist, lowest)
     return lowest
 
 
@@ -233,7 +235,7 @@ def find_clumps(dna: str, k: int, L: int, t: int) -> set:
 
     doctest:
     >>> dna = 'CGGACTCGACAGATGTGAAGAAATGTGAAGACTGAGTGAAGAGAAGAGGAAACACGACACGACATTGCGACATAATGTACGAATGTAATGTGCCTATGGC'
-    >>> sorted(list(find_clumps(dna, 5, 75, 4)))
+    >>> sorted(find_clumps(dna, 5, 75, 4))
     ['AATGT', 'CGACA', 'GAAGA']
     """
     out = set()
