@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import collections
 import itertools as it
-import random
 import numpy as np
 from typing import Iterable
 
@@ -34,16 +33,6 @@ def count_pattern_occurrence(dna: str, pattern: str) -> int:
         if pattern in kmer:
             count += 1
     return count
-
-
-def random_motifs(dna: Iterable, k: int) -> list:
-    """ Returns a list of randomly chosen k-mer inside each dna in the dna iterable """
-    random_kmers = []
-    n = len(dna[0])
-    for string in dna:
-        i = random.randint(0, n - k)
-        random_kmers.append(string[i : i + k])
-    return random_kmers
 
 
 def most_frequent_kmer(dna: str, k: int) -> set:
