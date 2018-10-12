@@ -1,0 +1,19 @@
+>>> import bioutils as b
+>>> global_motif = ["TCGGGGGTTTTT", "CCGGTGACTTAC", "ACGGGGATTTTC", "TTGGGGACTTTT", "AAGGGGACTTCC", "TTGGGGACTTCC", "TCGGGGATTCAT", "TCGGGGATTCCT", "TAGGGGAACTAC","TCGGGTATAACC"]
+
+Consensus test
+>>> b.consensus(global_motif)
+'TCGGGGATTTCC'
+
+Profile test
+>>> consensus = b.consensus(global_motif)
+>>> b.profile(global_motif,False)
+[[0.2, 0.2, 0.0, 0.0, 0.0, 0.0, 0.9, 0.1, 0.1, 0.1, 0.3, 0.0], [0.1, 0.6, 0.0, 0.0, 0.0, 0.0, 0.0, 0.4, 0.1, 0.2, 0.4, 0.6], [0.0, 0.0, 1.0, 1.0, 0.9, 0.9, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0], [0.7, 0.2, 0.0, 0.0, 0.1, 0.1, 0.0, 0.5, 0.8, 0.7, 0.3, 0.4]]
+
+Score test
+>>> consensus = b.consensus(global_motif)
+>>> b.score(global_motif)
+30
+
+
+b.profile_most_probable_kmer
