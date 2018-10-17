@@ -320,7 +320,19 @@ def profile_most_probable_kmer(profile: list, dna: str, k: int):
     return most_probable
 
 
+def reconstruct_string(kmers: list) -> str:
+    """ This is the inverse of iter_substr.
 
+    doctest:
+    >>> a = 'ATGCTAGCATGCTAGCTA'
+    >>> kmers = list(iter_substr(a,3))
+    >>> reconstruct_string(kmers)
+    'ATGCTAGCATGCTAGCTA'
+    """
+    step = len(kmers[0])
+    return "".join(it.islice(iter(kmers), 0, None, step))
+
+    
 if __name__ == "__main__":
     import doctest
 
