@@ -332,7 +332,7 @@ def reconstruct_string(kmers: list) -> str:
     step = len(kmers[0])
     return "".join(it.islice(iter(kmers), 0, None, step))
 
-    
+
 if __name__ == "__main__":
     import doctest
 
