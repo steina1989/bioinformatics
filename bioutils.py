@@ -333,6 +333,23 @@ def reconstruct_string(kmers: list) -> str:
     return "".join(it.islice(iter(kmers), 0, None, step))
 
 
+def de_bruijn_from_string(dna, k):
+    """Constructs the De Bruijn graph for a given string
+    doctest:
+
+    >>> graph = de_bruijn_from_string("AAGATTCTCTAC",4)
+    >>> ",".join(sorted(graph['TCT']))
+    'CTA,CTC'
+    """
+    graph = collections.defaultdict(list)
+    n = len(dna)
+
+    for i in range(n - k + 1):
+        graph[dna[i : i + k - 1]].append(dna[i + 1 : i + k])
+
+    return graph
+
+
 if __name__ == "__main__":
     import doctest
 
