@@ -6,8 +6,8 @@ import sys
 
 def parse_input(file_path):
     with open(file_path) as f:
-        source = f.readline().strip()
-        sink = f.readline().strip()
+        source = int(f.readline().strip())
+        sink = int(f.readline().strip())
         graph = defaultdict(list)
         for line in f.readlines():
             a, b, dist = map(int, line.strip().replace("->", ":").split(":"))
@@ -16,11 +16,7 @@ def parse_input(file_path):
 
 
 def main(source, sink, graph):
-    for node in range(sink):
-        a = graph[node]
-
-    a = graph[24]
-    print(a)
+    
 
 
 if __name__ == "__main__":
