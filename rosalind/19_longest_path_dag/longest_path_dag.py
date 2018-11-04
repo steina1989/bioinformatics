@@ -16,7 +16,13 @@ def parse_input(file_path):
 
 
 def main(source, sink, graph):
-    
+    print(source,sink)
+    for node in sorted(graph.keys()):
+        print(node)
+
+
+def predecessors() -> list:
+    return []
 
 
 if __name__ == "__main__":
