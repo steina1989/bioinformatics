@@ -6,5 +6,3 @@ CAT
 GGA
 GAT
 AGA
-GTT
-TTC
