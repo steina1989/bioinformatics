@@ -19,9 +19,8 @@ def main(kmers):
         out_n = bruijn[key]
         in_n = list_in_neighbours(key, bruijn)
 
-        if not ( len(in_n) == 1 and len(out_n) == 1 ) : 
+        if not (len(in_n) == 1 and len(out_n) == 1):
             pass
-
 
         else:
             in_neighbour = in_n[0]

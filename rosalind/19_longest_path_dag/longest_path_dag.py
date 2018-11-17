@@ -16,7 +16,7 @@ def parse_input(file_path):
 
 
 def main(source, sink, graph):
-    print(source,sink)
+    print(source, sink)
     for node in sorted(graph.keys()):
         print(node)
 
