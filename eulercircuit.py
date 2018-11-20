@@ -5,9 +5,9 @@ from directedgraph import DirectedGraph
 
 
 class EulerCircuit(DirectedGraph):
-    ''' Class for finding Euler circuit path.
+    """ Class for finding Euler circuit path.
     It is assumed that the provided graph is Eulerian.
-    '''
+    """
 
     def __init__(self, line_list):
         super().__init__(line_list)
@@ -23,6 +23,3 @@ if __name__ == "__main__":
         eu = EulerCircuit(f.readlines())
 
     eu.cycle()
-
-
-
