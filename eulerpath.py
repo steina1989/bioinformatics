@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import collections
-from eulercircuit import EulerCircuit
+from eulercycle import EulerCycle
 
 
-class EulerPath(EulerCircuit):
+class EulerPath(EulerCycle):
     """ What started out as what I thought would be a clever solution
     has become one of my biggest hacks. Please don't, ever, consider
     using this code.

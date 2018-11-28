@@ -3,7 +3,7 @@ import collections
 import sys
 
 
-class EulerCircuit:
+class EulerCycle:
     def __init__(self, graph, num_edges):
         self.graph = graph
         self.travelled = []
@@ -81,9 +81,9 @@ if __name__ == "__main__":
 
     eu = None
     if len(sys.argv) == 1:
-        eu = EulerCircuit.from_file("rosalind/27_eulerian_cycle/test.txt")
+        eu = EulerCycle.from_file("rosalind/27_eulerian_cycle/test.txt")
     else:
-        eu = EulerCircuit.from_file(sys.argv[1])
+        eu = EulerCycle.from_file(sys.argv[1])
 
     eu.cycle()
     print(eu)
