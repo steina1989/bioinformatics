@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import collections
-import sys
 from eulercircuit import EulerCircuit
 
 
 class EulerPath(EulerCircuit):
     """ What started out as what I thought would be a clever solution
-    has become one of my biggest hacks. Please don't ever consider
+    has become one of my biggest hacks. Please don't, ever, consider
     using this code.
     """
 
