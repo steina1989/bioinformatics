@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import collections
 import sys
-import json
-
 
 class EulerCircuit:
     def __init__(self, graph, num_edges):
@@ -24,31 +22,23 @@ class EulerCircuit:
 
     def cycle(self):
 
-        # Make cycle
         start_node = next(iter(self.graph))
-
         self.traverse(start_node)
-
         while self.there_are_unexplored_edges():
-            # Choose a node in self.travelled that has out neighbour that hasnt been used
-            # Transform self.travelled so that it starts at this node from above.
-            
-            # Finna nýjan punkt..
+
             node = self.find_new_start()
             self.fix_travelled(node)
 
-            untravelled_node = self.find_untravelled(self.graph[node])[0]
-            # Laga self.travelled svo það fari sama hring, nema frá nýja punktinum.
-            self.traverse(untravelled_node)
+            self.traverse(node)
 
     def traverse(self, node):
 
-        while not self.is_cycle():
+        while True:
             self.travelled.append(node)
             set_neighbours = self.graph[node]
             neighbour = self.find_untravelled(set_neighbours)
             if not neighbour:
-                continue
+                break
             self.mark_travelled(node,neighbour)
             node = neighbour[0]
 
@@ -57,7 +47,7 @@ class EulerCircuit:
 
         out = out[0:-1]
         index = out.index(node)
-        self.travelled = out[index:] + out[0:index] + [node]
+        self.travelled = out[index:] + out[0:index] 
 
     def find_new_start(self):
         for key in (set(self.travelled)):
@@ -80,11 +70,6 @@ class EulerCircuit:
 
     def __str__(self):
         return "->".join(self.travelled)
-
-    def is_cycle(self):
-        if len(self.travelled) <= 1:
-            return False
-        return self.travelled[0] == self.travelled[-1]
 
     def debug_print(self):
         for x, y in self.graph.items():
