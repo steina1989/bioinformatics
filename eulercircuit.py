@@ -2,6 +2,7 @@
 import collections
 import sys
 
+
 class EulerCircuit:
     def __init__(self, graph, num_edges):
         self.graph = graph
@@ -39,21 +40,20 @@ class EulerCircuit:
             neighbour = self.find_untravelled(set_neighbours)
             if not neighbour:
                 break
-            self.mark_travelled(node,neighbour)
+            self.mark_travelled(node, neighbour)
             node = neighbour[0]
 
-    def fix_travelled(self,node):
+    def fix_travelled(self, node):
         out = self.travelled
 
         out = out[0:-1]
         index = out.index(node)
-        self.travelled = out[index:] + out[0:index] 
+        self.travelled = out[index:] + out[0:index]
 
     def find_new_start(self):
-        for key in (set(self.travelled)):
+        for key in set(self.travelled):
             if self.find_untravelled(self.graph[key]):
                 return key
-
 
     def find_untravelled(self, set_neighbours):
         for neighbour in set_neighbours:
@@ -81,8 +81,9 @@ if __name__ == "__main__":
 
     eu = None
     if len(sys.argv) == 1:
-        eu = EulerCircuit.from_file('rosalind/27_eulerian_cycle/test.txt')
+        eu = EulerCircuit.from_file("rosalind/27_eulerian_cycle/test.txt")
     else:
         eu = EulerCircuit.from_file(sys.argv[1])
+
     eu.cycle()
     print(eu)
